@@ -1,7 +1,7 @@
 Databases
 =========
 
-### RDS
+## RDS
 * not serverless (except Aurora)
 * choose EC2 instance
 * can enable backup (auto with a retention day period) & snapshot (manual); using it will create a new DB !
@@ -33,7 +33,7 @@ Databases
 * cost-effective solution for unpredictable workload
 * can enable encryption at rest using KMS
 
-### DynamoDB
+## DynamoDB
 * NoSQL
 * consistent single digit millisecond latency
 * document & key-value db
@@ -61,7 +61,7 @@ Databases
     * high availabilty: fail over to AZ
     * increase reads & writes
 
-### Redshift
+## Redshift
 * data warehouse
 * single node (160GB) or multi-node in a leader/compute node model
 * advanced compression
@@ -78,11 +78,11 @@ Databases
 * encrypted at rest (KMS, customer own key)
 * available in only one AZ
 
-### Elasticache
+## Elasticache
 * web service for in-memory caching (redis & memcached)
 * redis is multi AZ and can be backuped
 
-### Database Migration Service
+## Database Migration Service
 * migrate data between db (cloud & onprem)
 * different types:
     * homogenous migration (oracle -> oracle)

@@ -12,7 +12,7 @@ STORAGE
     * accross multiple aws account
     * on premise to AWS 
  
- ### EBS
+ ## EBS
  * AZ replication ???
  * instance store: clear on stop
  * 1GiB to 16 TiB
@@ -69,7 +69,7 @@ STORAGE
  * Data lifecycle Manager (DLM): schedule and create the lifecycle (creation & deletion) of the snapshots; no additional cost (pay for the cost of the snapshot)
 
 
- ### NFS
+ ## NFS
  * One per VPC
  * needs security group
  * creation workflow: region > VPC + (subnet + security group)
@@ -88,19 +88,19 @@ STORAGE
     * manage application specifi access => Access points
  * allow in/out bound traffic on port 2049
 
-### S3
+## S3
 
-### MACIE
+## MACIE
 
-### Cloudfront
+## Cloudfront
 
-### DataSync
+## DataSync
 
-### Storage Gateway
+## Storage Gateway
 
-### AWS Organizations
+## AWS Organizations
 
-### EFS
+## EFS
 * NFS
 * read after write consistency
 * pay as you go
