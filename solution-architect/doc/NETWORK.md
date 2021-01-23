@@ -14,6 +14,14 @@ NETWORK
 
 
 ## VPC
+* logical datacenter in AWS
+* 5 VPCs per Region
+* 200 Subnets per VPC
+* 5 Elastic IP addresses (IPv4) per Region
+* 5 Internet gateways per Region
+* 200 Route tables per VPC
+* 2500 VPC security groups per Region
+* 50 Active VPC peering connections per VPC
 * consists of: 
     * Internet Gateways / virtual Private Gateways (one IGW per vpc ; not created on vpc creation)
     * route tables
@@ -35,6 +43,9 @@ NETWORK
 
 ### NAT (Network Adrress Translation)
 * outbound traffic: enable a private EC2 instance (private subnet) to access internet by allowing to communicate with the IGW
+* 5 NAT gateways per Availability Zone
+* => must be in a public subnet
+* => there must be a route out of the private subnet to the NAT instance to work
 * NAT instances
     * individual EC2 instance 
     * "source/destination check" ec2 option must be disabled
@@ -46,6 +57,7 @@ NETWORK
     * a route pointing to a terminated Nat has a "blackhole" status
 * NAT gateways
     * highly available spread accross multi AZ (many instances)
+    * redundant inside the AZ
     * AWS managed service
     * bound to a single subnet
     * create a route with 0.0.0.0 (internet) destination and the Nat gateway as the target
@@ -56,12 +68,20 @@ NETWORK
 
 ### BASTION
 * inbound traffic: access to a private ec2 instance (private subnet) by forwarding the connection
+* used to securely administrate instances
+* HA 
+    * network load balancer (level 4) with a static IP address forwarding traffic to multiple bastions accross multiples AZ (expensive $$$ !)
+    * autoscalling with a minimum of 1 instance (downtime during the new server provisioning if a server is lost)
+    * 
 
 ### NACL (Network Access Control Lists)
-* must associate a subnet to one NACL
-* associate to the default NACL by default (allow everything)
+* must associate a subnet to only one NACL at a time
+* associate to the default NACL on subnet creation (allow everything)
+* can block IP address
 * inbound & outbound rules
 * rules are evaluate in chronological order
+* 200 Network ACLs per VPC
+* 20 Rules per network ACL
 * ephemeral port (???)
 
 ### ELB
@@ -95,6 +115,7 @@ NETWORK
     * create a new VPN connection
         * select the VPG and the CG
         * once the VPN is available, set up the VPN on the Customer Gateway
+    * [tuto here](https://www.youtube.com/watch?v=dhpTTT6V1So&feature=youtu.be)
 
 ### Global Accelerator
 * improve the availability of the app
@@ -112,6 +133,7 @@ NETWORK
 * traffic does not leave the Amazon network
 * Interface Endpoints: ENI with a private IP address that serces as an entry point to supported services
 * Gateway endpoint: for S3 and DynamoDB (specify region for s3)
+* 20 Gateway VPC endpoints per Region
 
 ### AWS Private Link
 * opening a service in a VPC to another VPC without open up the VPC to the internet or VPC peering
@@ -131,6 +153,52 @@ NETWORK
 * single point of contact to connect VPN architecture
 * operates on public internet
 * good way to manage multiple sites VPN (low cost)
+
+### Cost model
+* use private IP over public IP address as it utilize the AWS backbone network
+* group EC2 instances into the same AZ and use private IP addresses to save cost /!\ less resilient /!\
+
+
+## AWS WAF
+* control http access to the content
+* layer 7 of web firewall
+* example: parse query string parameters
+* allow IP addresses doing request
+* 3 behaviors:
+    * allow all request except the specified
+    * block all request except the specified
+    * count the request that match the properties you specify
+* can filter on:
+    * IP
+    * countries
+    * values in headers, query strings, etc.
+    * lenght of request
+    * SQL injection and XSS
+
+
+## Elastic Load Balancer (ELB)
+* can `handle X-forwarded-For` header for tracing the real referer of a request
+* 504 when the app stops responding
+* route request to a target group
+* use sticky sessions to bind a user's session to a specific EC2 instance
+* bound to a specific AZ (???)
+* cross zone load balancing:
+    * need to be enabled
+    * ELB can send traffic to another AZ
+* Path Pattern:
+    * path based routing (eg. micro service context)
+    * direct traffic to differents ec2 instances (eventually accross AZ) based on the URL
+* Application Load Balancer
+    * operate at layer 7 (http & https)
+* Network Load Balancer
+    * operate at layer 4 (TCP traffic)
+    * when extreme performance is needed
+* Classic Load Balancer (legacy)
+    * application layer
+* ??? check FAQ for quotas and metrics (eg. timeout)
+
+## Route53
+
 
 ---
 [Back](/solution-architect)

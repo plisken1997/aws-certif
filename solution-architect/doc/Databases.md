@@ -8,6 +8,7 @@ Databases
 * can enable multi AZ for disaster recovery (DR) as a failover solution (DNS are updated to the secondary instance)
 * can enable autoscaling
 * can enable encrypted at rest with KMS 
+* "reboot with failover" option to failover to another AZ during the reboot
 * read replica for scaling
     * max 5 read replica for MySQL
     * max 1 read replica for PG
